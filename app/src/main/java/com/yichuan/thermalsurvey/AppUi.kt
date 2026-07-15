@@ -35,6 +35,8 @@ object AppUi {
 
     fun column(activity: Activity, padding: Int = 18): LinearLayout = LinearLayout(activity).apply {
         orientation = LinearLayout.VERTICAL
+        clipChildren = false
+        clipToPadding = false
         setPadding(activity.dp(padding), activity.dp(18), activity.dp(padding), activity.dp(32))
     }
 

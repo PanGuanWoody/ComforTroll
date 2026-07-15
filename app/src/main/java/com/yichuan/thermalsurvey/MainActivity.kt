@@ -89,6 +89,8 @@ class MainActivity : Activity() {
     private fun buildShell(): View {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
+            clipChildren = false
+            clipToPadding = false
             setBackgroundColor(AppUi.BACKGROUND)
         }
 
@@ -118,13 +120,18 @@ class MainActivity : Activity() {
         }, LinearLayout.LayoutParams(dp(48), dp(48)))
         root.addView(topBar, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(70)))
 
-        pageContainer = FrameLayout(this)
+        pageContainer = FrameLayout(this).apply {
+            clipChildren = false
+            clipToPadding = false
+        }
         root.addView(pageContainer, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
 
         val bottomBar = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
-            setPadding(dp(6), dp(6), dp(6), dp(6))
+            clipChildren = false
+            clipToPadding = false
+            setPadding(dp(10), dp(6), dp(10), dp(6))
             setBackgroundColor(Color.WHITE)
             elevation = dp(3).toFloat()
         }
@@ -165,7 +172,10 @@ class MainActivity : Activity() {
             3 -> buildSensorsPage()
             else -> buildHomePage()
         }
-        pageContainer.addView(page)
+        pageContainer.addView(page, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        ))
         topTitle.alpha = 0.35f
         topTitle.translationX = -dp(10).toFloat()
         topTitle.animate().alpha(1f).translationX(0f).setDuration(280L).start()
@@ -416,7 +426,13 @@ class MainActivity : Activity() {
     private fun pageColumn() = AppUi.column(this, 18)
     private fun scroll(content: View) = ScrollView(this).apply {
         setBackgroundColor(AppUi.BACKGROUND)
-        addView(content)
+        clipChildren = false
+        clipToPadding = false
+        isFillViewport = true
+        addView(content, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        ))
     }
 
     private fun prepareTrendCharts() {
